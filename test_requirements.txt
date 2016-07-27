@@ -1,0 +1,3 @@
+cloudshell-networking-ericsson
+cloudshell-snmp>=2.1,<2.2
+cloudshell-cli>=2.1,<2.2
