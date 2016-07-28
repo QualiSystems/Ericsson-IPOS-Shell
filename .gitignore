@@ -1,2 +1,6 @@
 *.pyc
 cloudshell/networking/ericsson/ipos/test_ipos.py
+
+dist
+cloudshell_networking_ericsson_ipos.egg-info/
+Ericsson_IPOS_Shell_Package/Ericsson-IPOS-Shell.zip

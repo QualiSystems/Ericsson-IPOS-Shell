@@ -1,4 +1,7 @@
 import re
+
+from cloudshell.networking.ericsson.ericsson_configuration_operations import EricssonConfigurationOperations
+from cloudshell.networking.ericsson.ericsson_connectivity_operations import EricssonConnectivityOperations
 from cloudshell.networking.ericsson.ericsson_send_command_operations import EricssonSendCommandOperations
 from cloudshell.networking.ericsson.ipos.autoload.ericsson_ipos_snmp_autoload import EricssonIPOSSNMPAutoload
 from cloudshell.shell.core.context_utils import get_decrypted_password_by_attribute_name_wrapper, \
@@ -29,6 +32,8 @@ EXIT_CONFIG_MODE_PROMPT_COMMAND = 'exit'
 COMMIT_COMMAND = 'commit'
 DEFAULT_ACTIONS = send_default_actions
 SUPPORTED_OS = ["IP[ -]?OS"]
+AUTHENTICATION_ERROR_PATTERN = r'[Ll]ogin\s*[Ii]ncorrect|' + \
+                               '[Bb]ad\s*([Pp]assword(s)?|[Ss]ecret(s)?|[Ff]ailed\s*(to)?\s*[Aa]uthenticate'
 ERROR_MAP = {'Database.*Lock.*': 'Database connection locked, try again.'}
 
 
@@ -37,8 +42,7 @@ def enter_enable_mode(session):
     if not re.search(ENABLE_PROMPT, result):
         session.hardware_expect('enable', re_string=DEFAULT_PROMPT,
                                 expect_map={'[Pp]assword': lambda session: session.send_line(
-                                    get_attribute_by_name_wrapper('Enable Password')())})
-                                    #get_decrypted_password_by_attribute_name_wrapper('Enable Password')())})
+                                    get_decrypted_password_by_attribute_name_wrapper('Enable Password')())})
     result = session.hardware_expect('', re_string=DEFAULT_PROMPT)
     if not re.search(ENABLE_PROMPT, result):
         raise Exception('enter_enable_mode', 'Enable password is incorrect')
@@ -52,3 +56,4 @@ SEND_COMMAND_OPERATIONS_CLASS = EricssonSendCommandOperations
 
 GET_LOGGER_FUNCTION = get_logger_with_thread_id
 POOL_TIMEOUT = 300
+HE_MAX_LOOP_RETRIES = 2000
