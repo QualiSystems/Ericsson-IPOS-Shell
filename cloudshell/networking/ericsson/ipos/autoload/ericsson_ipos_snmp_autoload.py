@@ -18,15 +18,17 @@ class EricssonIPOSSNMPAutoload(EricssonGenericSNMPAutoload):
         """
 
         EricssonGenericSNMPAutoload.__init__(self, snmp_handler, logger, supported_os)
-        self.port_ethernet_vendor_type_pattern = r'.6.10.201|.6.10.202'
+        self.port_ethernet_vendor_type_pattern = r'port.*1ge|port.*10ge'
         self._cli = cli
         self.snmp_view = 'qualiview'
         self.snmp_community = community
+        self.vendor_type_exclusion_pattern = ['port.*mgmt']
+        self.load_mib_list = ['ERICSSON-ROUTER-PRODUCT-MIB']
         if not self.snmp_community:
             self.snmp_community = get_attribute_by_name('SNMP Read Community') or 'qualicommunity'
 
     def load_ericsson_mib(self):
-        path = os.path.abspath(os.path.join(os.path.dirname(__file__), '', 'mibs'))
+        path = os.path.abspath(os.path.join(os.path.dirname(__file__), '', 'mib'))
         self.snmp.update_mib_sources(path)
 
     @property
@@ -47,15 +49,18 @@ class EricssonIPOSSNMPAutoload(EricssonGenericSNMPAutoload):
         return result
 
     def _enable_snmp(self):
+        snmp_service_enabled = 'not supported' not in self.cli.send_command('show service | include snmp').lower()
         existing_snmp_server = 'snmp server is not running' not in self.cli.send_command('show snmp server').lower()
         existing_snmp_view = self.snmp_view in self.cli.send_command('show snmp view').lower()
         existing_snmp_community = self.snmp_community in self.cli.send_command('show snmp communities').lower()
 
-        if not existing_snmp_server:
+        if not snmp_service_enabled:
             self.cli.send_config_command('context local')
             self.cli.send_config_command('service snmp server')
             self.cli.send_config_command('end')
-            self.cli.send_config_command('snmp server')
+
+        if not existing_snmp_server:
+            self.cli.send_config_command('snmp server enhance ifmib')
 
         if not existing_snmp_view:
             self.cli.send_config_command('snmp view {0} internet included'.format(self.snmp_view))
