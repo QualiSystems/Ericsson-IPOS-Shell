@@ -18,11 +18,13 @@ class EricssonIPOSSNMPAutoload(EricssonGenericSNMPAutoload):
         """
 
         EricssonGenericSNMPAutoload.__init__(self, snmp_handler, logger, supported_os)
-        self.port_ethernet_vendor_type_pattern = r'port.*1ge|port.*10ge'
+        self.port_ethernet_vendor_type_pattern = r'port.*\d+ge|\S+.1.193.218.6.10.251'
         self._cli = cli
         self.snmp_view = 'qualiview'
         self.snmp_community = community
         self.vendor_type_exclusion_pattern = ['port.*mgmt']
+        self.interface_mapping_key = 'eriRouterIpBindIfIndex'
+        self.interface_mapping_mib = 'ERICSSON-ROUTER-IP-BIND-MIB'
         self.load_mib_list = ['ERICSSON-ROUTER-PRODUCT-MIB']
         if not self.snmp_community:
             self.snmp_community = get_attribute_by_name('SNMP Read Community') or 'qualicommunity'
