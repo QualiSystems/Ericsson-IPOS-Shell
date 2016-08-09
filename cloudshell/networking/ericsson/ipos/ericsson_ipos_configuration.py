@@ -5,8 +5,7 @@ from cloudshell.networking.ericsson.ericsson_connectivity_operations import Eric
 from cloudshell.networking.ericsson.ericsson_firmware_operations import EricssonFirmwareOperations
 from cloudshell.networking.ericsson.ericsson_send_command_operations import EricssonSendCommandOperations
 from cloudshell.networking.ericsson.ipos.autoload.ericsson_ipos_snmp_autoload import EricssonIPOSSNMPAutoload
-from cloudshell.shell.core.context_utils import get_decrypted_password_by_attribute_name_wrapper, \
-    get_attribute_by_name_wrapper
+from cloudshell.shell.core.context_utils import get_decrypted_password_by_attribute_name_wrapper
 from cloudshell.shell.core.dependency_injection.context_based_logger import get_logger_with_thread_id
 
 DEFAULT_PROMPT = '\].*[>#]\s*$'
@@ -21,10 +20,6 @@ def send_default_actions(session):
 
     enter_enable_mode(session=session)
     session.hardware_expect('terminal length 0', ENABLE_PROMPT)
-    # session.hardware_expect('terminal no exec prompt timestamp', ENABLE_PROMPT)
-    # session.hardware_expect(ENTER_CONFIG_MODE_PROMPT_COMMAND, CONFIG_MODE_PROMPT)
-    # session.hardware_expect('no logging console', CONFIG_MODE_PROMPT)
-    # session.hardware_expect('exit', DEFAULT_PROMPT + '|' + ENABLE_PROMPT)
 
 
 ENTER_CONFIG_MODE_PROMPT_COMMAND = 'configure'
