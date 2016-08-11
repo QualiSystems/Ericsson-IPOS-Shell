@@ -303,6 +303,12 @@
                         <AttachedAttribute Name="Power Management" IsOverridable="true" IsLocal="true">
                             <AllowedValues/>
                         </AttachedAttribute>
+                        <AttachedAttribute Name="Enable SNMP" IsOverridable="true" IsLocal="true">
+                            <AllowedValues/>
+                        </AttachedAttribute>
+                        <AttachedAttribute Name="Disable SNMP" IsOverridable="true" IsLocal="true">
+                            <AllowedValues/>
+                        </AttachedAttribute>
                     </AttachedAttributes>
                     <AttributeValues>
                         <AttributeValue Name="User" Value=""/>
@@ -328,6 +334,8 @@
                         <AttributeValue Name="Console User" Value=""/>
                         <AttributeValue Name="CLI Connection Type" Value="Auto"/>
                         <AttributeValue Name="Power Management" Value="False"/>
+                        <AttributeValue Name="Enable SNMP" Value="True"/>
+                        <AttributeValue Name="Disable SNMP" Value="False"/>
                     </AttributeValues>
                     <ParentModels/>
                     <Drivers>

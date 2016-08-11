@@ -40,14 +40,18 @@ class EricssonIPOSSNMPAutoload(EricssonGenericSNMPAutoload):
         return self._cli
 
     def discover(self):
-        self._enable_snmp()
+        enable_snmp = (get_attribute_by_name('Enable SNMP') or 'true').lower() == 'true'
+        disable_snmp = (get_attribute_by_name('Disable SNMP') or 'false').lower() == 'true'
+        if enable_snmp:
+            self._enable_snmp()
         try:
             result = self.get_autoload_details()
         except Exception as e:
             self.logger.error('Autoload failed: {0}'.format(e.message))
             raise Exception('EricssonGenericSNMPAutoload', e.message)
         finally:
-            self._disable_snmp()
+            if disable_snmp:
+                self._disable_snmp()
         return result
 
     def _enable_snmp(self):
