@@ -1,10 +1,5 @@
 import re
 
-from cloudshell.networking.ericsson.ericsson_configuration_operations import EricssonConfigurationOperations
-from cloudshell.networking.ericsson.ericsson_connectivity_operations import EricssonConnectivityOperations
-from cloudshell.networking.ericsson.ericsson_firmware_operations import EricssonFirmwareOperations
-from cloudshell.networking.ericsson.ericsson_send_command_operations import EricssonSendCommandOperations
-from cloudshell.networking.ericsson.ipos.autoload.ericsson_ipos_snmp_autoload import EricssonIPOSSNMPAutoload
 from cloudshell.shell.core.context_utils import get_decrypted_password_by_attribute_name_wrapper
 from cloudshell.shell.core.dependency_injection.context_based_logger import get_logger_with_thread_id
 
@@ -42,12 +37,6 @@ def enter_enable_mode(session):
     if not re.search(ENABLE_PROMPT, result):
         raise Exception('enter_enable_mode', 'Enable password is incorrect')
 
-
-CONNECTIVITY_OPERATIONS_CLASS = EricssonConnectivityOperations
-CONFIGURATION_OPERATIONS_CLASS = EricssonConfigurationOperations
-FIRMWARE_OPERATIONS_CLASS = EricssonFirmwareOperations
-AUTOLOAD_OPERATIONS_CLASS = EricssonIPOSSNMPAutoload
-SEND_COMMAND_OPERATIONS_CLASS = EricssonSendCommandOperations
 
 GET_LOGGER_FUNCTION = get_logger_with_thread_id
 POOL_TIMEOUT = 300

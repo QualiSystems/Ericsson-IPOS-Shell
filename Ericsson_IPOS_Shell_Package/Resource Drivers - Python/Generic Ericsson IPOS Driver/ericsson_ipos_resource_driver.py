@@ -1,4 +1,8 @@
-import inject
+from cloudshell.networking.ericsson.ericsson_configuration_operations import EricssonConfigurationOperations
+from cloudshell.networking.ericsson.ericsson_connectivity_operations import EricssonConnectivityOperations
+from cloudshell.networking.ericsson.ericsson_firmware_operations import EricssonFirmwareOperations
+from cloudshell.networking.ericsson.ericsson_send_command_operations import EricssonSendCommandOperations
+from cloudshell.networking.ericsson.ipos.autoload.ericsson_ipos_snmp_autoload import EricssonIPOSSNMPAutoload
 
 from cloudshell.networking.generic_bootstrap import NetworkingGenericBootstrap
 from cloudshell.networking.networking_resource_driver_interface_v4 import NetworkingResourceDriverInterface
@@ -29,7 +33,7 @@ class EricssonIPOSResourceDriver(ResourceDriverInterface, NetworkingResourceDriv
 
     @context_from_args
     def ApplyConnectivityChanges(self, context, request):
-        connectivity_operations = inject.instance('connectivity_operations')
+        connectivity_operations = EricssonConnectivityOperations()
         connectivity_operations.logger.info('Start applying connectivity changes, request is: {0}'.format(str(request)))
         response = connectivity_operations.apply_connectivity_changes(request)
         connectivity_operations.logger.info('Finished applying connectivity changes, responce is: {0}'.format(str(
@@ -48,7 +52,7 @@ class EricssonIPOSResourceDriver(ResourceDriverInterface, NetworkingResourceDriv
         :param vrf_management_name: VRF management Name
         """
 
-        configuration_operations = inject.instance('configuration_operations')
+        configuration_operations = EricssonConfigurationOperations()
         response = configuration_operations.restore_configuration(source_file=path, restore_method=restore_method,
                                                                   config_type=configuration_type,
                                                                   vrf=vrf_management_name)
@@ -64,7 +68,7 @@ class EricssonIPOSResourceDriver(ResourceDriverInterface, NetworkingResourceDriv
         :param vrf_management_name: VRF management Name
         """
 
-        configuration_operations = inject.instance('configuration_operations')
+        configuration_operations = EricssonConfigurationOperations()
         response = configuration_operations.save_configuration(folder_path, configuration_type, vrf_management_name)
         configuration_operations.logger.info('Save completed')
         return response
@@ -85,7 +89,8 @@ class EricssonIPOSResourceDriver(ResourceDriverInterface, NetworkingResourceDriv
         :rtype: string
         """
 
-        autoload_operations = inject.instance("autoload_operations")
+        autoload_operations = EricssonIPOSSNMPAutoload()
+        autoload_operations.logger.info('Autoload started')
         response = autoload_operations.discover()
         autoload_operations.logger.info('Autoload completed')
         return response
@@ -101,7 +106,7 @@ class EricssonIPOSResourceDriver(ResourceDriverInterface, NetworkingResourceDriv
         :rtype: string
         """
 
-        firmware_operations = inject.instance("firmware_operations")
+        firmware_operations = EricssonFirmwareOperations()
         response = firmware_operations.update_firmware(remote_host=remote_host, file_path=file_path)
         firmware_operations.logger.info(response)
 
@@ -113,7 +118,7 @@ class EricssonIPOSResourceDriver(ResourceDriverInterface, NetworkingResourceDriv
         :rtype: string
         """
 
-        send_command_operations = inject.instance("send_command_operations")
+        send_command_operations = EricssonSendCommandOperations()
         response = send_command_operations.send_command(command=custom_command)
         return response
 
@@ -123,7 +128,7 @@ class EricssonIPOSResourceDriver(ResourceDriverInterface, NetworkingResourceDriv
 
         """
 
-        send_command_operations = inject.instance("send_command_operations")
+        send_command_operations = EricssonSendCommandOperations()
         send_command_operations.send_command(command='')
 
     @context_from_args
@@ -133,7 +138,7 @@ class EricssonIPOSResourceDriver(ResourceDriverInterface, NetworkingResourceDriv
         :return: result
         :rtype: string
         """
-        send_command_operations = inject.instance("send_command_operations")
+        send_command_operations = EricssonSendCommandOperations()
         result_str = send_command_operations.send_config_command(command=custom_command)
         return result_str
 
