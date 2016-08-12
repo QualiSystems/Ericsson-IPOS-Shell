@@ -1,7 +1,7 @@
 import inject
 
 from cloudshell.networking.generic_bootstrap import NetworkingGenericBootstrap
-from cloudshell.networking.networking_resource_driver_interface import NetworkingResourceDriverInterface
+from cloudshell.networking.networking_resource_driver_interface_v4 import NetworkingResourceDriverInterface
 from cloudshell.shell.core.context_utils import context_from_args
 from cloudshell.shell.core.resource_driver_interface import ResourceDriverInterface
 from cloudshell.shell.core.driver_utils import GlobalLock
@@ -43,9 +43,9 @@ class EricssonIPOSResourceDriver(ResourceDriverInterface, NetworkingResourceDriv
         """Restore selected file to the provided destination
 
         :param path: source config file
-        :param config_type: running or startup configs
+        :param configuration_type: running or startup configs
         :param restore_method: append or override methods
-        :param vrf: VRF management Name
+        :param vrf_management_name: VRF management Name
         """
 
         configuration_operations = inject.instance('configuration_operations')
@@ -59,9 +59,9 @@ class EricssonIPOSResourceDriver(ResourceDriverInterface, NetworkingResourceDriv
     def save(self, context, folder_path, configuration_type, vrf_management_name=None):
         """Save selected file to the provided destination
 
-        :param source_filename: source file, which will be saved
-        :param destination_host: destination path where file will be saved
-        :param vrf: VRF management Name
+        :param configuration_type: source file, which will be saved
+        :param folder_path: destination path where file will be saved
+        :param vrf_management_name: VRF management Name
         """
 
         configuration_operations = inject.instance('configuration_operations')
