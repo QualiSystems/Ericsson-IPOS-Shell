@@ -18,7 +18,7 @@ class EricssonIPOSSNMPAutoload(EricssonGenericSNMPAutoload):
         """
 
         EricssonGenericSNMPAutoload.__init__(self, snmp_handler, logger, supported_os)
-        self.port_ethernet_vendor_type_pattern = r'port.*\d+ge|\S+.1.193.218.6.10.251'
+        self.port_ethernet_vendor_type_pattern = r'port.*\d+ge|\S+.1.193.218.6.10.251|\S+Port.251'
         self._cli = cli
         self.snmp_view = 'qualiview'
         self.snmp_community = snmp_community
@@ -40,8 +40,13 @@ class EricssonIPOSSNMPAutoload(EricssonGenericSNMPAutoload):
         return self._cli
 
     def discover(self):
-        enable_snmp = (get_attribute_by_name('Enable SNMP') or 'true').lower() == 'true'
-        disable_snmp = (get_attribute_by_name('Disable SNMP') or 'false').lower() == 'true'
+        try:
+            enable_snmp = (get_attribute_by_name('Enable SNMP') or 'true').lower() == 'true'
+            disable_snmp = (get_attribute_by_name('Disable SNMP') or 'false').lower() == 'true'
+        except:
+            enable_snmp = True
+            disable_snmp = False
+
         if enable_snmp:
             self._enable_snmp()
         try:
