@@ -95,6 +95,16 @@
                 <Rule Name="Configuration"/>
             </Rules>
         </AttributeInfo>
+        <AttributeInfo Name="Enable SNMP" Type="Boolean" DefaultValue="True" IsReadOnly="false">
+            <Rules>
+                <Rule Name="Configuration"/>
+            </Rules>
+        </AttributeInfo>
+        <AttributeInfo Name="Disable SNMP" Type="Boolean" DefaultValue="False" IsReadOnly="false">
+            <Rules>
+                <Rule Name="Configuration"/>
+            </Rules>
+        </AttributeInfo>
         <AttributeInfo Name="SNMP Version" Type="String" DefaultValue="" IsReadOnly="false">
             <Rules>
                 <Rule Name="Configuration"/>
@@ -115,7 +125,7 @@
                 <Rule Name="Configuration"/>
             </Rules>
         </AttributeInfo>
-        <AttributeInfo Name="CLI TCP Port" Type="Numeric" DefaultValue="" IsReadOnly="false">
+        <AttributeInfo Name="CLI TCP Port" Type="Numeric" DefaultValue="0" IsReadOnly="false">
             <Rules>
                 <Rule Name="Configuration"/>
             </Rules>
