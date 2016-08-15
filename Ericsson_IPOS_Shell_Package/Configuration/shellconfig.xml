@@ -16,6 +16,9 @@ xmlns="http://schemas.qualisystems.com/ResourceManagement/ShellsConfigurationSch
             <Attribute Name="SNMP V3 User" Value="" />
             <Attribute Name="SNMP V3 Password" Value="" />
             <Attribute Name="SNMP V3 Private Key" Value="" />
+            <Attribute Name="Enable SNMP" Value="True" />
+            <Attribute Name="Disable SNMP" Value="False" />
+            <Attribute Name="CLI TCP Port" Value="0" />
             <Attribute Name="CLI Connection Type" Value="Auto" />
             <Attribute Name="User" Value="" />
             <Attribute Name="Password" Value="" />
