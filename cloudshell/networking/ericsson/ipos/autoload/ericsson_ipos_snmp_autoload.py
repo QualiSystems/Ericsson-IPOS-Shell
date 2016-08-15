@@ -22,6 +22,8 @@ class EricssonIPOSSNMPAutoload(EricssonGenericSNMPAutoload):
         self._cli = cli
         self.snmp_view = 'qualiview'
         self.snmp_community = snmp_community
+        self.enable_snmp = True
+        self.disable_snmp = False
         self.vendor_type_exclusion_pattern = ['port.*mgmt']
         self.interface_mapping_key = 'eriRouterIpBindIfIndex'
         self.interface_mapping_mib = 'ERICSSON-ROUTER-IP-BIND-MIB'
@@ -41,13 +43,12 @@ class EricssonIPOSSNMPAutoload(EricssonGenericSNMPAutoload):
 
     def discover(self):
         try:
-            enable_snmp = (get_attribute_by_name('Enable SNMP') or 'true').lower() == 'true'
-            disable_snmp = (get_attribute_by_name('Disable SNMP') or 'false').lower() == 'true'
+            self.enable_snmp = (get_attribute_by_name('Enable SNMP') or 'true').lower() == 'true'
+            self.disable_snmp = (get_attribute_by_name('Disable SNMP') or 'false').lower() == 'true'
         except:
-            enable_snmp = True
-            disable_snmp = False
+            pass
 
-        if enable_snmp:
+        if self.enable_snmp:
             self._enable_snmp()
         try:
             result = self.get_autoload_details()
@@ -55,7 +56,7 @@ class EricssonIPOSSNMPAutoload(EricssonGenericSNMPAutoload):
             self.logger.error('Autoload failed: {0}'.format(e.message))
             raise Exception('EricssonGenericSNMPAutoload', e.message)
         finally:
-            if disable_snmp:
+            if self.disable_snmp:
                 self._disable_snmp()
         return result
 
