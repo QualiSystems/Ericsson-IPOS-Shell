@@ -30,6 +30,7 @@ xmlns="http://schemas.qualisystems.com/ResourceManagement/ShellsConfigurationSch
             <Attribute Name="Backup Location" Value="" />
             <Attribute Name="Sessions Concurrency Limit" Value="1" />
             <Attribute Name="Power Management" Value="False" />
+            <Attribute Name="VRF Management Name" Value="" />
         </Attributes>
     </ResourceTemplate>
 </ResourceTemplates>
