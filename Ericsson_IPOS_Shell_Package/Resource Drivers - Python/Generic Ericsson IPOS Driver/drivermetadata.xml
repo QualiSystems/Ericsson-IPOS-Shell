@@ -30,15 +30,15 @@
                 </Parameters>
             </Command>
         </Category>
-        <Command Name="send_custom_command" DisplayName="Send Custom Command" Tags="">
+        <Command Name="send_custom_command" DisplayName="Send Custom Command" Tags="" Description="Executes any custom command entered in the input on the device.">
             <Parameters>
                 <Parameter Name="custom_command" Type="String" Mandatory="True" DefaultValue=""
                            Description="The command to execute. Note that commands that require a reponse aren't supported."/>
             </Parameters>
         </Command>
-        <Command Name="health_check" DisplayName="Health check" Description="">
+        <Command Name="health_check" DisplayName="Health check" Description="Performs checks on the device that validates that the Shell can work. In a networking device this checks usually include connectivity check for the protocols used by the Shell. The health check result will be visible in the resource live status and command output.">
         </Command>
-        <Command Name="save" DisplayName="Save" Tags="">
+        <Command Name="save" DisplayName="Save" Tags="" Description="Create and save a configuration file">
             <Parameters>
                 <Parameter Name="folder_path" Type="String" Mandatory="False" DisplayName="Folder Path"
                            DefaultValue=""
@@ -50,7 +50,7 @@
                            Description="Virtual Routing and Forwarding is used to share same/overlapping sub-net on the same core. Service Providers use it to share their backbone with multiple customers and also assign a management VRF which they use to manage the devices. If kept empty the value in the 'VRF Management Name' attribute on the root model will be used."/>
             </Parameters>
         </Command>
-        <Command Name="restore" DisplayName="Restore" Tags="">
+        <Command Name="restore" DisplayName="Restore" Tags="" Description="Restore a configuration file">
             <Parameters>
                 <Parameter Name="path" Type="String" Mandatory="True" DefaultValue="" DisplayName="Path"
                            Description="The path to the configuration file, including the configuration file name. The path should include the protocol type (for example 'tftp://10.10.10.10/asdf')."/>
@@ -64,7 +64,7 @@
                            Description="Virtual Routing and Forwarding is used to share same/overlapping sub-net on the same core. Service Providers use it to share their backbone with multiple customers and also assign a management VRF which they use to manage the devices. If kept empty the value in the 'VRF Management Name' attribute on the root model will be used."/>
             </Parameters>
         </Command>
-        <Command Name="load_firmware" DisplayName="Load Firmware" Tags="">
+        <Command Name="load_firmware" DisplayName="Load Firmware" Tags="" Description="Loads a firmware onto the device">
             <Parameters>
                 <Parameter Name="remote_host" Type="String" Mandatory="True" DisplayName="Remote Host" DefaultValue=""
                            Description="The full path to the location of firmware file to load on the device."/>

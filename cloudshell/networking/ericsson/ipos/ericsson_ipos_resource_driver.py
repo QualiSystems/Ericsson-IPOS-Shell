@@ -2,6 +2,7 @@ from cloudshell.networking.ericsson.ericsson_configuration_operations import Eri
 from cloudshell.networking.ericsson.ericsson_connectivity_operations import EricssonConnectivityOperations
 from cloudshell.networking.ericsson.ericsson_firmware_operations import EricssonFirmwareOperations
 from cloudshell.networking.ericsson.ericsson_send_command_operations import EricssonSendCommandOperations
+from cloudshell.networking.ericsson.ericsson_state_operations import EricssonStateOperations
 from cloudshell.networking.ericsson.ipos.autoload.ericsson_ipos_snmp_autoload import EricssonIPOSSNMPAutoload
 
 from cloudshell.networking.networking_resource_driver_interface_v4 import NetworkingResourceDriverInterface
@@ -43,7 +44,7 @@ class EricssonIPOSResourceDriver(ResourceDriverInterface, NetworkingResourceDriv
 
     @GlobalLock.lock
     @context_from_args
-    def restore(self, context, path, configuration_type, restore_method, vrf_management_name=None):
+    def restore(self, context, path, restore_method='override', configuration_type='running', vrf_management_name=None):
         """Restore selected file to the provided destination
 
         :param path: source config file
@@ -53,14 +54,14 @@ class EricssonIPOSResourceDriver(ResourceDriverInterface, NetworkingResourceDriv
         """
 
         configuration_operations = EricssonConfigurationOperations()
-        response = configuration_operations.restore_configuration(source_file=path, restore_method=restore_method,
-                                                                  config_type=configuration_type,
-                                                                  vrf=vrf_management_name)
+        response = configuration_operations.restore(path=path, restore_method=restore_method,
+                                                    configuration_type=configuration_type,
+                                                    vrf_management_name=vrf_management_name)
         configuration_operations.logger.info('Restore completed')
         configuration_operations.logger.info(response)
 
     @context_from_args
-    def save(self, context, folder_path, configuration_type, vrf_management_name=None):
+    def save(self, context, configuration_type, folder_path, vrf_management_name=None):
         """Save selected file to the provided destination
 
         :param configuration_type: source file, which will be saved
@@ -69,17 +70,25 @@ class EricssonIPOSResourceDriver(ResourceDriverInterface, NetworkingResourceDriv
         """
 
         configuration_operations = EricssonConfigurationOperations()
-        response = configuration_operations.save_configuration(folder_path, configuration_type, vrf_management_name)
+        response = configuration_operations.save(folder_path, configuration_type, vrf_management_name)
         configuration_operations.logger.info('Save completed')
         return response
 
     @context_from_args
     def orchestration_save(self, context, mode="shallow", custom_params=None):
-        pass
+        configuration_operations = EricssonConfigurationOperations()
+        configuration_operations.logger.info('Orchestration save started')
+        response = configuration_operations.orchestration_save(mode=mode, custom_params=custom_params)
+        configuration_operations.logger.info('Orchestration save completed')
+        return response
 
     @context_from_args
     def orchestration_restore(self, context, saved_artifact_info, custom_params=None):
-        pass
+        configuration_operations = EricssonConfigurationOperations()
+        configuration_operations.logger.info('Orchestration restore started')
+        configuration_operations.orchestration_restore(saved_artifact_info=saved_artifact_info,
+                                                       custom_params=custom_params)
+        configuration_operations.logger.info('Orchestration restore completed')
 
     @context_from_args
     def get_inventory(self, context):
@@ -97,17 +106,17 @@ class EricssonIPOSResourceDriver(ResourceDriverInterface, NetworkingResourceDriv
 
     @GlobalLock.lock
     @context_from_args
-    def load_firmware(self, context, remote_host, file_path):
+    def load_firmware(self, context, path, vrf_management_name=None):
         """Upload and updates firmware on the resource
 
-        :param remote_host: path to tftp:// server where firmware file is stored
-        :param file_path: firmware file name
+        :param path: full path to firmware file, i.e. tftp://10.10.10.1/firmware.tar
+        :param vrf_management_name: VRF management Name
         :return: result
         :rtype: string
         """
 
         firmware_operations = EricssonFirmwareOperations()
-        response = firmware_operations.update_firmware(remote_host=remote_host, file_path=file_path)
+        response = firmware_operations.load_firmware(path=path, vrf_management_name=vrf_management_name)
         firmware_operations.logger.info(response)
 
     @context_from_args
@@ -128,8 +137,8 @@ class EricssonIPOSResourceDriver(ResourceDriverInterface, NetworkingResourceDriv
 
         """
 
-        send_command_operations = EricssonSendCommandOperations()
-        send_command_operations.send_command(command='')
+        state_operations = EricssonStateOperations()
+        return state_operations.health_check()
 
     @context_from_args
     def send_custom_config_command(self, context, custom_command):
