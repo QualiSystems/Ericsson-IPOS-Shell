@@ -64,6 +64,21 @@
                 <Rule Name="Configuration"/>
             </Rules>
         </AttributeInfo>
+        <AttributeInfo Name="Backup Type" Type="String" DefaultValue="" IsReadOnly="false">
+            <Rules>
+                <Rule Name="Configuration"/>
+            </Rules>
+        </AttributeInfo>
+        <AttributeInfo Name="Backup User" Type="String" DefaultValue="" IsReadOnly="false">
+            <Rules>
+                <Rule Name="Configuration"/>
+            </Rules>
+        </AttributeInfo>
+        <AttributeInfo Name="Backup Password" Type="Password" DefaultValue="3M3u7nkDzxWb0aJ/IZYeWw==" IsReadOnly="false">
+            <Rules>
+                <Rule Name="Configuration"/>
+            </Rules>
+        </AttributeInfo>
         <AttributeInfo Name="Model" Type="String" DefaultValue="" IsReadOnly="true">
             <Rules Override="false">
                 <Rule Name="Setting"/>
@@ -273,6 +288,15 @@
                         <AttachedAttribute Name="Backup Location" IsOverridable="true" IsLocal="true">
                             <AllowedValues/>
                         </AttachedAttribute>
+                        <AttachedAttribute Name="Backup Type" IsOverridable="true" IsLocal="true">
+                            <AllowedValues/>
+                        </AttachedAttribute>
+                        <AttachedAttribute Name="Backup User" IsOverridable="true" IsLocal="true">
+                            <AllowedValues/>
+                        </AttachedAttribute>
+                        <AttachedAttribute Name="Backup Password" IsOverridable="true" IsLocal="true">
+                            <AllowedValues/>
+                        </AttachedAttribute>
                         <AttachedAttribute Name="VRF Management Name" IsOverridable="true" IsLocal="true">
                             <AllowedValues/>
                         </AttachedAttribute>
@@ -338,6 +362,9 @@
                         <AttributeValue Name="Vendor" Value=""/>
                         <AttributeValue Name="Location" Value=""/>
                         <AttributeValue Name="Backup Location" Value=""/>
+                        <AttributeValue Name="Backup User" Value=""/>
+                        <AttributeValue Name="Backup Password" Value="3M3u7nkDzxWb0aJ/IZYeWw=="/>
+                        <AttributeValue Name="Backup Type" Value=""/>
                         <AttributeValue Name="Model" Value=""/>
                         <AttributeValue Name="SNMP Read Community" Value=""/>
                         <AttributeValue Name="SNMP V3 Password" Value=""/>

@@ -5,7 +5,7 @@ from cloudshell.networking.ericsson.ericsson_send_command_operations import Eric
 from cloudshell.networking.ericsson.ericsson_state_operations import EricssonStateOperations
 from cloudshell.networking.ericsson.ipos.autoload.ericsson_ipos_snmp_autoload import EricssonIPOSSNMPAutoload
 
-from cloudshell.networking.networking_resource_driver_interface_v4 import NetworkingResourceDriverInterface
+from cloudshell.networking.networking_resource_driver_interface import NetworkingResourceDriverInterface
 from cloudshell.shell.core.context_utils import context_from_args
 from cloudshell.shell.core.driver_bootstrap import DriverBootstrap
 from cloudshell.shell.core.resource_driver_interface import ResourceDriverInterface
@@ -44,7 +44,7 @@ class EricssonIPOSResourceDriver(ResourceDriverInterface, NetworkingResourceDriv
 
     @GlobalLock.lock
     @context_from_args
-    def restore(self, context, path, restore_method='override', configuration_type='running', vrf_management_name=None):
+    def restore(self, context, path, configuration_type='running', restore_method='override', vrf_management_name=None):
         """Restore selected file to the provided destination
 
         :param path: source config file
@@ -61,7 +61,7 @@ class EricssonIPOSResourceDriver(ResourceDriverInterface, NetworkingResourceDriv
         configuration_operations.logger.info(response)
 
     @context_from_args
-    def save(self, context, configuration_type, folder_path, vrf_management_name=None):
+    def save(self, context, folder_path, configuration_type, vrf_management_name=None):
         """Save selected file to the provided destination
 
         :param configuration_type: source file, which will be saved
@@ -150,6 +150,21 @@ class EricssonIPOSResourceDriver(ResourceDriverInterface, NetworkingResourceDriv
         send_command_operations = EricssonSendCommandOperations()
         result_str = send_command_operations.send_config_command(command=custom_command)
         return result_str
+
+    @GlobalLock.lock
+    @context_from_args
+    def update_firmware(self, context, remote_host, file_path):
+        """Upload and updates firmware on the resource
+
+        :param remote_host: path to firmware file location on ftp or tftp server
+        :param file_path: firmware file name
+        :return: result
+        :rtype: string
+        """
+
+        firmware_operations = EricssonFirmwareOperations()
+        response = firmware_operations.load_firmware(path=remote_host)
+        firmware_operations.logger.info(response)
 
     @context_from_args
     def shutdown(self, context):
