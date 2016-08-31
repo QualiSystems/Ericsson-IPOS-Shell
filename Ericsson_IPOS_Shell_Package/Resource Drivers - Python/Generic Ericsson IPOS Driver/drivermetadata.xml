@@ -29,6 +29,14 @@
                     <Parameter Name="custom_params" Type="String" Mandatory="True" DefaultValue="" Description=""/>
                 </Parameters>
             </Command>
+            <Command Name="update_firmware" DisplayName="Load Firmware" Tags="" Description="Loads a firmware onto the device">
+                <Parameters>
+                    <Parameter Name="remote_host" Type="String" Mandatory="True" DisplayName="Remote Host" DefaultValue=""
+                               Description="The full path to the location of firmware file to load on the device."/>
+                    <Parameter Name="file_path" Type="String" Mandatory="True" DisplayName="File Path" DefaultValue=""
+                               Description="Firmware file name"/>
+                </Parameters>
+            </Command>
         </Category>
         <Command Name="send_custom_command" DisplayName="Send Custom Command" Tags="" Description="Executes any custom command entered in the input on the device.">
             <Parameters>
@@ -66,10 +74,10 @@
         </Command>
         <Command Name="load_firmware" DisplayName="Load Firmware" Tags="" Description="Loads a firmware onto the device">
             <Parameters>
-                <Parameter Name="remote_host" Type="String" Mandatory="True" DisplayName="Remote Host" DefaultValue=""
+                <Parameter Name="path" Type="String" Mandatory="True" DisplayName="Path" DefaultValue=""
                            Description="The full path to the location of firmware file to load on the device."/>
-                <Parameter Name="file_path" Type="String" Mandatory="True" DisplayName="File Path" DefaultValue=""
-                           Description="Firmware file name"/>
+                <Parameter Name="vrf_management_name" Type="String" Mandatory="True" DisplayName="VRF Management Name" DefaultValue=""
+                           Description="Virtual Routing and Forwarding is used to share same/overlapping sub-net on the same core. Service Providers use it to share their backbone with multiple customers and also assign a management VRF which they use to manage the devices. If kept empty the value in the 'VRF Management Name' attribute on the root model will be used."/>
             </Parameters>
         </Command>
     </Layout>
