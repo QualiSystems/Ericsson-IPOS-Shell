@@ -1,7 +1,7 @@
 from cloudshell.networking.ericsson.ericsson_configuration_operations import EricssonConfigurationOperations
 from cloudshell.networking.ericsson.ericsson_connectivity_operations import EricssonConnectivityOperations
 from cloudshell.networking.ericsson.ericsson_firmware_operations import EricssonFirmwareOperations
-from cloudshell.networking.ericsson.ericsson_send_command_operations import EricssonSendCommandOperations
+from cloudshell.networking.ericsson.ericsson_run_command_operations import EricssonRunCommandOperations
 from cloudshell.networking.ericsson.ericsson_state_operations import EricssonStateOperations
 from cloudshell.networking.ericsson.ipos.autoload.ericsson_ipos_snmp_autoload import EricssonIPOSSNMPAutoload
 
@@ -127,7 +127,7 @@ class EricssonIPOSResourceDriver(ResourceDriverInterface, NetworkingResourceDriv
         :rtype: string
         """
 
-        send_command_operations = EricssonSendCommandOperations()
+        send_command_operations = EricssonRunCommandOperations()
         response = send_command_operations.send_command(command=custom_command)
         return response
 
@@ -162,7 +162,7 @@ class EricssonIPOSResourceDriver(ResourceDriverInterface, NetworkingResourceDriv
         :return: result
         :rtype: string
         """
-        send_command_operations = EricssonSendCommandOperations()
+        send_command_operations = EricssonRunCommandOperations()
         result_str = send_command_operations.send_config_command(command=custom_command)
         return result_str
 
