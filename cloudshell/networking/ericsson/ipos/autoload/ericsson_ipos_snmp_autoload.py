@@ -22,8 +22,8 @@ class EricssonIPOSSNMPAutoload(EricssonGenericSNMPAutoload):
         self._cli = cli
         self.snmp_view = 'qualiview'
         self.snmp_community = snmp_community
-        self.enable_snmp = True
-        self.disable_snmp = False
+        self._enable_snmp = True
+        self._disable_snmp = False
         self.vendor_type_exclusion_pattern = ['port.*mgmt']
         self.interface_mapping_key = 'eriRouterIpBindIfIndex'
         self.interface_mapping_mib = 'ERICSSON-ROUTER-IP-BIND-MIB'
@@ -43,24 +43,24 @@ class EricssonIPOSSNMPAutoload(EricssonGenericSNMPAutoload):
 
     def discover(self):
         try:
-            self.enable_snmp = (get_attribute_by_name('Enable SNMP') or 'true').lower() == 'true'
-            self.disable_snmp = (get_attribute_by_name('Disable SNMP') or 'false').lower() == 'true'
+            self._enable_snmp = (get_attribute_by_name('Enable SNMP') or 'true').lower() == 'true'
+            self._disable_snmp = (get_attribute_by_name('Disable SNMP') or 'false').lower() == 'true'
         except:
             pass
 
-        if self.enable_snmp:
-            self._enable_snmp()
+        if self._enable_snmp:
+            self.enable_snmp()
         try:
             result = self.get_autoload_details()
         except Exception as e:
             self.logger.error('Autoload failed: {0}'.format(e.message))
             raise Exception('EricssonGenericSNMPAutoload', e.message)
         finally:
-            if self.disable_snmp:
-                self._disable_snmp()
+            if self._disable_snmp:
+                self.disable_snmp()
         return result
 
-    def _enable_snmp(self):
+    def enable_snmp(self):
         snmp_service_enabled = 'not supported' not in self.cli.send_command('show service | include snmp').lower()
         existing_snmp_server = 'snmp server is not running' not in self.cli.send_command('show snmp server').lower()
         existing_snmp_view = self.snmp_view in self.cli.send_command('show snmp view').lower()
@@ -85,7 +85,7 @@ class EricssonIPOSSNMPAutoload(EricssonGenericSNMPAutoload):
                 self.snmp_community))
         self.cli.commit()
 
-    def _disable_snmp(self):
+    def disable_snmp(self):
         time.sleep(5)
         self.cli.send_config_command('no snmp community {0}'.format(self.snmp_community))
         self.cli.send_config_command('no snmp view {0}'.format(self.snmp_view))
